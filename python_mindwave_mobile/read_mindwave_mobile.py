@@ -6,7 +6,7 @@ from MindwaveDataPointReader import MindwaveDataPointReader
 
 
 if __name__ == '__main__':
-    mac = '9C:B7:0D:72:CD:02'
+    mac = '20:68:9D:B8:C8:4C'
     print "do you want to use the default MAC address?(Y/n):"
     mac_yn = raw_input().lower()
     while not (mac_yn=='' or mac_yn.startswith('y')):
