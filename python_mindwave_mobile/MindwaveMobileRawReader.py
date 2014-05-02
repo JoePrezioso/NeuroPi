@@ -8,10 +8,10 @@ class MindwaveMobileRawReader:
         self._buffer = [];
         self._bufferPosition = 0;
         
-    def connectToMindWaveMobile(self):
+    def connectToMindWaveMobile(self, mac):
         # connecting via bluetooth RFCOMM
         self.mindwaveMobileSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        mindwaveMobileAddress = '9C:B7:0D:72:CD:02';
+        mindwaveMobileAddress = mac;
         while(True):
             try:
                 self.mindwaveMobileSocket.connect((mindwaveMobileAddress, 1))
