@@ -34,17 +34,19 @@ def load_image(file_name):
 
 #screen.blit(background(0,0))
 
+'''
 def gameLoop():
 
     while(True):
         #Break if the player presses 'A'
         if event.key == K_a:
             break;
+'''
 
 def main():
 	#We will generate objects randomly. So, we must seed.
 	random.seed()
-    gameLoop()
+    #gameLoop()
 
    
 #Call main()
