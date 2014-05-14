@@ -124,13 +124,6 @@ def gameLoop():
         #test creation of the image
         loadImage('Leaf.png', leafAccel, leafLift)
         
-        #'''
-        #screen.fill((100,200,200),(100,200-leafLift,100,leafLift))
-        #screen.fill((200,200,100),(300,200-leafAccel,100,leafAccel))
-        #screen.fill((200,100,100),(500,200-poor_signal,100,poor_signal))
-        pygame.display.flip()
-        #'''
-        
         #speed (210 to keep you from stopping the leaf) reduced by acceleration     
         leafSpeed = 110 - leafAccel
         #height increased by meditation
@@ -138,21 +131,18 @@ def gameLoop():
 
         #add number of milliseconds since last call to score
         score += 1
-        #Note: Font rendering is not thread safe!
-        #(text, anti-alias (boolean), RGB val for color, background=None)
-        #pygame.font.Font.render(score, True, (0,255,0))
-        #clock ticks
+        #scoreMsg is a string that should make score look prettier.
+        scoreMsg = "Score: "
+        #Create score font
+        scoreFont = pygame.font.Font(None, 30)
+        #...and render it! -- not breaking anything, but it's also not displaying anything
+        white = (255,255,255)
+        #scoreText is what will actually be put onto the screen...ideally
+        scoreText = scoreFont.render((scoreMsg + str(score)), 1, white)
+        #screen.blit seems to be breaking things
+        screen.blit(scoreText, (0,0))
         
-        #console print code for testing purposes
-        '''        
-        s = "Lift: " 
-        s += str(leafLift) 
-        s += "\nAccel: " 
-        s += str(leafAccel)
-        s += "\nScore: " 
-        s += str(score)
-        print(s)
-        '''
+        pygame.display.flip()
         
         clock.tick(60)
         
