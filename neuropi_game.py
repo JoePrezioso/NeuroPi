@@ -12,8 +12,9 @@ class GetData( threading.Thread ):
         self.meditation = 50
         self.attention = 50
         self.poor_signal = 50
+        self.running = True
 
-        while True:
+        while self.running:
             dataPoint = mindwaveDataPointReader.readNextDataPoint()
             if (not dataPoint.__class__ is RawDataPoint):
                 if dataPoint.__class__ is AttentionDataPoint:
@@ -47,6 +48,10 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == K_ESC:
+                done = True
     screen.fill((120,120,120))
     
     #meditation+=random.choice([1,0,-1])
@@ -58,11 +63,12 @@ while not done:
     screen.fill((100,200,200),(50,300-data.meditation*2,100,data.meditation*2))
     screen.fill((200,200,100),(200,300-data.attention*2,100,data.attention*2))
     fps = clock.get_fps()#framerate max 60, display height 200
-    screen.fill((100,100,200),(500,300-fps*200/60,50,fps*200/60))
+    screen.fill((100,100,200),(650,300-fps*200/60,50,fps*200/60))
     pygame.display.flip()
 
     clock.tick(60)
 
+data.running = False
 data.join()
 pygame.quit()
 
