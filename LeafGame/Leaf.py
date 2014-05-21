@@ -12,6 +12,18 @@ winX = 700
 global winY 
 winY = 500
 
+#Velocity
+global xVelocity
+xVelocity = 5
+global yVelocity
+yVelocity = 5
+
+#x and y variables for leaf
+global leafX
+leafX = 20
+global leafY
+leafY = 20
+
 size = (winX,winY)
 
 random.seed(100)
@@ -62,25 +74,31 @@ def spawnApple():
 #None of my print statements are printing...
 def gameLoop():
 
-    ##needed for game loop
-    done = False
+	##needed for game loop
+	done = False
 
-    ##Player score will be based on time, so we need a clock
-    clock = pygame.time.Clock()
+	##Player score will be based on time, so we need a clock
+	clock = pygame.time.Clock()
 	
-    #These variables will determine the leaf's speed and direction
-    meditation = 20
-    attention = 20
-    poor_signal = 50
+	#These variables will determine the leaf's speed and direction
+	meditation = 5
+	attention = 5
+	poor_signal = 50
     
-    #Player's Score
-    score = 0
+    #Player's Score and velocities
+	score = 0
 	
+	xVelocity = 5
+	yVelocity = 5
+	leafX = 20
+	leafY = 20
 	
+	leafLift = 1
+	leafAccel = 1
 	
     #run until done is set to true
-    while not done:
-        
+	while not done:
+		
 		for event in pygame.event.get([pygame.KEYDOWN]):
 			#check for Keydown event - only calls once
 			if event.type == pygame.KEYDOWN:
@@ -92,20 +110,16 @@ def gameLoop():
 			#if keystate[K_SPACE]:
 			#	done = True
 			if event.key == K_UP:
-				meditation -= 20
-				
+				meditation -= 5
 			elif event.key == K_DOWN:
-				meditation += 10
-				
-			else:
 				meditation += 5
+				
 			#increase attention if left is pressed
 			if event.key == K_LEFT:
-				attention -= 20
+				attention -= 5
 			elif event.key == K_RIGHT:
-				attention += 10
-			else:
-				attention += 2
+				attention += 5
+
 
 		#screen fill
 		screen.fill((0,100,200))
@@ -119,23 +133,52 @@ def gameLoop():
 		poor_signal+=random.choice([1,0,-1])
 
 		#leaf lift and leaf acceleration 
-		leafLift = meditation*2
-		leafAccel = attention*2
-
-		#control values by restricting their maximum
-		if leafAccel >= (winX - 20):
-			leafAccel = (winX - 20)
-
-		if leafAccel <= 10:
-			leafAccel = 10
-
-		if leafLift >= (winY - 20):
-			leafLift = (winY - 20)
-		if leafLift <= 0:
-			leafLift = 0
-
+		leafLift += meditation*2
+		leafAccel += attention*2
+		
+		#LeafX and LeafY will hit the end of the screen...almost instantaneously
+		#Must call these lines of code less often before using in loadImage
+		
+		#only run this once every second
+		
+		
+		#Modify velocities
+		xVelocity += leafAccel
+		yVelocity += leafLift
+		
+		#Restrict max/min velocities
+		if xVelocity >= 30:
+			xVelocity = 30
+		if xVelocity <= -30:
+			xVelocity = -30
+		
+		if yVelocity >= 30:
+			xVelocity = 30
+		if yVelocity <= -30:
+			xVelocity = -30
+		
+		#control values by restricting their maximum/minimum
+		if (leafX + xVelocity) >= (winX - 20):
+			leafX = (winX - 20)
+		elif (leafX + xVelocity) <= 10:
+			leafX = 10
+		else:
+			#increase X value by xVelocity
+			leafX += xVelocity
+		
+		if (leafY + yVelocity) >= (winY - 20):
+			leafY = (winY - 20)
+		elif (leafY + yVelocity) <= 0:
+			leafY = 0
+		else:
+			#increase X value by xVelocity
+			leafY += yVelocity
+	
+		leafX = leafX/(pygame.time.get_ticks()/1000)
+		leafY = leafY/(pygame.time.get_ticks()/1000)
+	
 		#test creation of the image
-		loadImage('Leaf.png', leafAccel, leafLift)
+		loadImage('Leaf.png', leafX, leafY)
 		
 		#we can spawn an apple!
 		#spawnApple()
@@ -162,7 +205,6 @@ def gameLoop():
 
 		clock.tick(60)
         
-    print("Loop Closed")
 
 def main():
     #We will generate objects randomly. So, we must seed.
