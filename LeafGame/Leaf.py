@@ -110,15 +110,15 @@ def gameLoop():
 			#if keystate[K_SPACE]:
 			#	done = True
 			if event.key == K_UP:
-				meditation -= 5
+				meditation -= 3
 			elif event.key == K_DOWN:
-				meditation += 5
+				meditation += 3
 				
 			#increase attention if left is pressed
 			if event.key == K_LEFT:
-				attention -= 5
+				attention -= 3
 			elif event.key == K_RIGHT:
-				attention += 5
+				attention += 3
 
 
 		#screen fill
@@ -128,13 +128,13 @@ def gameLoop():
 		#dataPoint = mindwaveDataPointReader.readNextDataPoint()
 		#if (not dataPoint.__class__ is RawDataPoint):
 		#    print dataPoint
-		meditation+=random.choice([1,0,-1])
-		attention+=random.choice([1,0,-1])
+		#meditation+=random.choice([1,0,-1])
+		#attention+=random.choice([1,0,-1])
 		poor_signal+=random.choice([1,0,-1])
 
 		#leaf lift and leaf acceleration 
-		leafLift += meditation*2
-		leafAccel += attention*2
+		leafLift += meditation/2
+		leafAccel += attention/2
 		
 		#LeafX and LeafY will hit the end of the screen...almost instantaneously
 		#Must call these lines of code less often before using in loadImage
@@ -147,36 +147,39 @@ def gameLoop():
 		yVelocity += leafLift
 		
 		#Restrict max/min velocities
-		if xVelocity >= 30:
-			xVelocity = 30
-		if xVelocity <= -30:
-			xVelocity = -30
+		if xVelocity >= 2:
+			xVelocity = 2
+		if xVelocity <= -2:
+			xVelocity = -2
 		
-		if yVelocity >= 30:
-			xVelocity = 30
-		if yVelocity <= -30:
-			xVelocity = -30
+		if yVelocity >= 2:
+			xVelocity = 2
+		if yVelocity <= -2:
+			xVelocity = -2
+		
+		#set values, THEN restrict them *facepalm*
+		leafX += attention
+		#increase X value by xVelocity
+		leafY += meditation
+		
+		#leafX = leafX/(pygame.time.get_ticks())
+		#leafY = leafY/(pygame.time.get_ticks())
 		
 		#control values by restricting their maximum/minimum
-		if (leafX + xVelocity) >= (winX - 20):
+		if leafX >= (winX - 20):
+			xVelocity = -2
 			leafX = (winX - 20)
-		elif (leafX + xVelocity) <= 10:
-			leafX = 10
-		else:
-			#increase X value by xVelocity
-			leafX += xVelocity
+		elif leafX <= 0:
+			xVelocity = 2
+			leafX = 0
 		
-		if (leafY + yVelocity) >= (winY - 20):
-			leafY = (winY - 20)
-		elif (leafY + yVelocity) <= 0:
+		if leafY >= winY - 20:
+			yVelocity = -2
+			leafY = winY - 20
+		elif leafY <= 0:
+			yVelocity = 2
 			leafY = 0
-		else:
-			#increase X value by xVelocity
-			leafY += yVelocity
-	
-		leafX = leafX/(pygame.time.get_ticks()/1000)
-		leafY = leafY/(pygame.time.get_ticks()/1000)
-	
+			
 		#test creation of the image
 		loadImage('Leaf.png', leafX, leafY)
 		
