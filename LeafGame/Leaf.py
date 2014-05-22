@@ -104,25 +104,24 @@ def gameLoop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
-            #check for Keydown event - only calls once
             if event.type == pygame.KEYDOWN:
                 #break if player presses space
                 if event.key == K_SPACE:
                     done = True
+                        
+                keystate = pygame.key.get_pressed()
+                #if keystate[K_SPACE]:
+                #    done = True
+                if event.key == K_UP:
+                    meditation -= 3
+                elif event.key == K_DOWN:
+                    meditation += 3
                     
-            keystate = pygame.key.get_pressed()
-            #if keystate[K_SPACE]:
-            #    done = True
-            if event.key == K_UP:
-                meditation -= 3
-            elif event.key == K_DOWN:
-                meditation += 3
-                
-            #increase attention if left is pressed
-            if event.key == K_LEFT:
-                attention -= 3
-            elif event.key == K_RIGHT:
-                attention += 3
+                #increase attention if left is pressed
+                if event.key == K_LEFT:
+                    attention -= 3
+                elif event.key == K_RIGHT:
+                    attention += 3
 
 
         #screen fill

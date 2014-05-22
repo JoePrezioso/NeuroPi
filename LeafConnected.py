@@ -64,7 +64,6 @@ def titleScreen():
                 done = True
             #check for Keydown event - only calls once
             if event.type == pygame.KEYDOWN:
-                #break if player presses space
                 if event.key == K_SPACE:
                     done = True
                                         
@@ -117,20 +116,7 @@ def gameLoop():
                 #break if player presses space
                 if event.key == K_SPACE:
                     done = True
-                    
-            keystate = pygame.key.get_pressed()
-            #if keystate[K_SPACE]:
-            #    done = True
-            if event.key == K_UP:
-                meditation -= 5
-            elif event.key == K_DOWN:
-                meditation += 5
-                
-            #increase attention if left is pressed
-            if event.key == K_LEFT:
-                attention -= 5
-            elif event.key == K_RIGHT:
-                attention += 5
+            
 
 
         #screen fill
