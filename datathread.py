@@ -4,18 +4,26 @@ from python_mindwave_mobile.MindwaveDataPoints import *
 
 class GetData( threading.Thread ):
 
-    def __init__(self, mdpr):
+    def __init__(self, mdpr=None):
         super(GetData, self).__init__()
         self.mindwaveDataPointReader = mdpr
+        self.meditation = 50
+        self.attention = 50
+        self.poor_signal = 100
+        self.running = False
         
+    def setMindwaveDataPointReader(self, mdpr):
+        self.mindwaveDataPointReader = mdpr
+
     def run ( self ):
         self.meditation = 50
         self.attention = 50
-        self.poor_signal = 50
+        self.poor_signal = 100
         self.running = True
 
         while self.running:
             dataPoint = self.mindwaveDataPointReader.readNextDataPoint()
+            #print dataPoint
             if (not dataPoint.__class__ is RawDataPoint):
                 if dataPoint.__class__ is AttentionDataPoint:
                     self.attention = dataPoint.attentionValue
@@ -26,6 +34,8 @@ class GetData( threading.Thread ):
                 else:
                     pass
                     #print dataPoint
+
+        
 """
 #start the reader
 if __name__ == '__main__':

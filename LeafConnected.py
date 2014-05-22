@@ -39,6 +39,11 @@ pygame.mouse.set_visible(True)
 ##Player score will be based on time, so we need a clock
 clock = pygame.time.Clock()
 
+#start the reader
+if __name__ == '__main__':
+    mindwaveDataPointReader = MindwaveDataPointReader()
+    mindwaveDataPointReader.start('74:E5:43:89:54:2E')
+
 #file name, x value, and y value for image to be loaded
 def loadImage(fileName, xVal, yVal):
     img = pygame.image.load(os.path.join('LeafGame', 'assets', fileName))
@@ -81,11 +86,6 @@ def gameLoop():
     ##Player score will be based on time, so we need a clock
     clock = pygame.time.Clock()
     
-    #These variables will determine the leaf's speed and direction
-    meditation = 50
-    attention = 50
-    poor_signal = 100
-    
     #Player's Score and velocities
     score = 0
     
@@ -97,10 +97,6 @@ def gameLoop():
     leafLift = 1
     leafAccel = 1
 
-    #start the reader
-    if __name__ == '__main__':
-        mindwaveDataPointReader = MindwaveDataPointReader()
-        mindwaveDataPointReader.start('74:E5:43:89:54:2E')
 
     #start the data thread
     data = GetData(mindwaveDataPointReader)
@@ -124,50 +120,32 @@ def gameLoop():
         #screen.fill((120,120,120))
 
         #turn the screen red if there's a poor signal
-        #screen.fill((200,100,100),(0,600-data.poor_signal*3, 800,data.poor_signal*3))
+        screen.fill((200,100,100),(0,500-data.poor_signal*5/2, 800,data.poor_signal*5/2))
+        
 
         #leaf lift and leaf acceleration 
-        leafLift = (data.meditation-100)/10.0
-        leafAccel = (data.attention-100)/10.0
+        leafLift = (data.meditation-50)/25.0
+        leafAccel = (data.attention-50)/25.0
         
         
         
         #Modify velocities
-        xVelocity += leafAccel
-        yVelocity += leafLift
+        xVelocity = leafAccel
+        yVelocity = leafLift
         
-        #Restrict max/min velocities
-        if xVelocity >= 2:
-            xVelocity = 2
-        if xVelocity <= -2:
-            xVelocity = -2
-        
-        if yVelocity >= 2:
-            xVelocity = 2
-        if yVelocity <= -2:
-            xVelocity = -2
-        
-        #set values, THEN restrict them *facepalm*
-        leafX += attention
+        leafX += xVelocity
         #increase X value by xVelocity
-        leafY += meditation
-        
-        #leafX = leafX/(pygame.time.get_ticks())
-        #leafY = leafY/(pygame.time.get_ticks())
+        leafY += yVelocity
         
         #control values by restricting their maximum/minimum
         if leafX >= (winX - 20):
-            xVelocity = -2
             leafX = (winX - 20)
         elif leafX <= 0:
-            xVelocity = 2
             leafX = 0
         
         if leafY >= winY - 20:
-            yVelocity = -2
             leafY = winY - 20
         elif leafY <= 0:
-            yVelocity = 2
             leafY = 0
             
         #test creation of the image
@@ -187,17 +165,22 @@ def gameLoop():
         scoreMsg = "Score: "
         #Create score font
         scoreFont = pygame.font.Font(None, 30)
-        #...and render it! -- not breaking anything, but it's also not displaying anything
         white = (255,255,255)
-        #scoreText is what will actually be put onto the screen...ideally
-        scoreText = scoreFont.render((scoreMsg + str(score)), 1, white)
-        #screen.blit seems to be breaking things
+
+
+        scoreText = scoreFont.render((scoreMsg + str(score) + 
+            " m"+str(data.meditation)+
+            " a"+str(data.attention)+
+            " s"+str(data.poor_signal)), 1, white)
         screen.blit(scoreText, (0,0))
 
         pygame.display.flip()
 
         clock.tick(60)
     
+    #end the data thread
+    data.running = False
+    data.join()
         
 
 def main():
@@ -213,9 +196,6 @@ def main():
 #Call main()
 main()
 
-#end the data thread
-data.running = False
-data.join()
 #quit pygame
 pygame.quit()
     
