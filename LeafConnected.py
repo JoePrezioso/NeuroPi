@@ -125,7 +125,10 @@ def gameLoop():
         #screen.fill((120,120,120))
 
         #turn the screen red if there's a poor signal
-        screen.fill((200,100,100),(0,500-data.poor_signal*5/2, 800,data.poor_signal*5/2))
+        semi = pygame.Surface((winX,winY), pygame.SRCALPHA, 32)
+        semi.fill((200,100,100, data.poor_signal))
+        screen.blit(semi, (0,0))
+        #screen.fill((200,100,100),(0,500-data.poor_signal*5/2, 800,data.poor_signal*5/2))
         
 
         
