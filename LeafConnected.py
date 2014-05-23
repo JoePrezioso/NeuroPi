@@ -120,12 +120,12 @@ def gameLoop():
         #screen.fill((120,120,120))
 
         #turn the screen red if there's a poor signal
-        screen.fill((200,100,100),(0,500-data.poor_signal*5/2, 800,data.poor_signal*5/2))
+        screen.fill((200,100,100,data.poor_signal),(0,500-data.poor_signal*5/2, 800,data.poor_signal*5/2))
         
 
         #leaf lift and leaf acceleration 
-        leafLift = (data.meditation-50)/25.0
-        leafAccel = (data.attention-50)/25.0
+        leafLift = (data.meditation-50)/-25.0
+        leafAccel = (data.attention-50)/-25.0
         
         
         
