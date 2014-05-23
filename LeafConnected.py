@@ -95,8 +95,6 @@ def gameLoop():
     xVelocity = 5
     yVelocity = 5
    
-    leafLift = 1
-    leafAccel = 1
 
     #start the data thread
     data = GetData(mindwaveDataPointReader)
@@ -133,19 +131,11 @@ def gameLoop():
         screen.fill((200,100,100),(0,500-data.poor_signal*5/2, 800,data.poor_signal*5/2))
         
 
-        #leaf lift and leaf acceleration 
-        leafLift = (data.meditation-50)/-25.0
-        leafAccel = (data.attention-50)/-25.0
         
         
-        
-        #Modify velocities
-        xVelocity = leafAccel
-        yVelocity = leafLift
-        
-        leaf.x += xVelocity
-        #increase X value by xVelocity
-        leaf.y += yVelocity
+        #modify location by a speed determined by these values
+        leaf.x += (data.meditation-50)/-25.0
+        leaf.y += (data.attention-50)/-25.0
         
         #control values by restricting their maximum/minimum
         if leaf.x >= (winX - 20):
