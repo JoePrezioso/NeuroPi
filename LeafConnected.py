@@ -113,6 +113,11 @@ def gameLoop():
             data.meditation+=random.randrange(-1.0,2.0)
             data.attention+=random.randrange(-1.0,2.0)
             data.poor_signal+=random.randrange(-1.0,2.0)
+            if data.meditation<0: data.meditation = 90
+            if data.attention<0: data.attention = 90
+            if data.meditation>100: data.meditation = 10
+            if data.attention>100: data.attention = 10
+            if data.poor_signal>200: data.poor_signal = 200
 
         #screen fill
         screen.fill((0,100,200))
@@ -153,6 +158,9 @@ def gameLoop():
             apple.x-=1
             if apple.x<0:
                 apples.remove(apple)
+            elif apple.collides(leaf):
+                score -= 900
+                apples.remove(apple)
         
         #we can spawn an apple!
         #spawnApple()
@@ -164,7 +172,7 @@ def gameLoop():
 
         #add number of milliseconds since last call to score
         score += 1
-        if score%400==0:
+        if score%300==0:
             apples+=[spawnApple()]        
 
         #scoreMsg is a string that should make score look prettier.
