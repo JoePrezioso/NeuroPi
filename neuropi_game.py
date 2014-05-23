@@ -8,10 +8,17 @@ from python_mindwave_mobile.MindwaveDataPoints import *
 
 class GetData( threading.Thread ):
 
-   def run ( self ):
+    def __init__(self):
+        super(GetData, self).__init__()
         self.meditation = 50
         self.attention = 50
-        self.poor_signal = 50
+        self.poor_signal = 100
+        self.running = False
+
+    def run ( self ):
+        self.meditation = 50
+        self.attention = 50
+        self.poor_signal = 100
         self.running = True
 
         while self.running:
@@ -63,7 +70,7 @@ while not done:
     screen.fill((100,200,200),(50,300-data.meditation*2,100,data.meditation*2))
     screen.fill((200,200,100),(200,300-data.attention*2,100,data.attention*2))
     fps = clock.get_fps()#framerate max 60, display height 200
-    screen.fill((100,100,200),(650,300-fps*200/60,50,fps*200/60))
+    screen.fill((100,100,200),(600,300-fps*200/60,50,fps*200/60))
     pygame.display.flip()
 
     clock.tick(60)
