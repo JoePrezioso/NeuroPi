@@ -43,7 +43,13 @@ def loadImage(fileName):
     img = pygame.image.load(os.path.join('LeafGame', 'assets', fileName))
     img = img.convert_alpha()
     return img
- 
+
+#centers on x, y and draws
+def draw(image, x, y, size):
+    screen.blit(image, (x-size/2, y-size/2))
+def draw_item(item):
+    draw(item.image, item.x, item.y, item.size)
+
 #title screen
 def titleScreen():
     #load title image
@@ -152,9 +158,9 @@ def gameLoop():
         elif leaf.y <= 0:
             leaf.y = 0
             
-        screen.blit(leaf.image, (leaf.x, leaf.y))
+        draw_item(leaf)
         for apple in apples:
-            screen.blit(apple.image, (apple.x, apple.y))
+            draw_item(apple)
             apple.x-=1
             if apple.x<0:
                 apples.remove(apple)
@@ -162,14 +168,6 @@ def gameLoop():
                 score -= 900
                 apples.remove(apple)
         
-        #we can spawn an apple!
-        #spawnApple()
-        
-        #speed (210 to keep you from stopping the leaf) reduced by acceleration     
-        leafSpeed = 110 - leafAccel
-        #height increased by meditation
-        leafHeight = 0 + leafLift
-
         #add number of milliseconds since last call to score
         score += 1
         if score%300==0:
