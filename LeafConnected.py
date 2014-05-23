@@ -74,15 +74,12 @@ def titleScreen():
                                         
 #code to spawn an apple
 def spawnApple():
-    yRand = random.randrange(0, (winY - 60))
-    apple = Item(loadImage('Apple.png'), (winX - 60), yRand)
+    yRand = random.randrange(0, (winY - apple.size/2))
+    apple = Item(loadImage('Apple.png'), (winX - apple.size/2), yRand)
     return apple
     
-#None of my print statements are printing...
 def gameLoop():
 
-    ##needed for game loop
-    done = False
 
     ##Player score will be based on time, so we need a clock
     clock = pygame.time.Clock()
@@ -101,7 +98,7 @@ def gameLoop():
     if headset:
         data.start()
 
-    #run until done is set to true
+    done = False
     while not done:
         
         for event in pygame.event.get():
@@ -152,7 +149,7 @@ def gameLoop():
         for apple in apples:
             draw_item(apple)
             apple.x-=1
-            if apple.x<0:
+            if apple.x<-apple.size/2:
                 apples.remove(apple)
             elif apple.collides(leaf):
                 score -= 900
@@ -163,7 +160,6 @@ def gameLoop():
         if score%300==0:
             apples+=[spawnApple()]        
 
-        #scoreMsg is a string that should make score look prettier.
         scoreMsg = "Score: "
         #Create score font
         scoreFont = pygame.font.Font(None, 30)
