@@ -74,8 +74,9 @@ def titleScreen():
                                         
 #code to spawn an apple
 def spawnApple():
-    yRand = random.randrange(0, (winY - apple.size/2))
-    apple = Item(loadImage('Apple.png'), (winX - apple.size/2), yRand)
+    yRand = random.randrange(0, winY)
+    apple = Item(loadImage('Apple.png'), winX, yRand)
+    apple.x -= apple.size/2
     return apple
     
 def gameLoop():
