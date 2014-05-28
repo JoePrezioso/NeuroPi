@@ -17,6 +17,6 @@ setup(
     keywords = "bci raspberrypi neurosky",
     url = "https://github.com/ArcticSphinx/NeuroPi",
     packages=['neuropi'],
-    long_description=read('README'),
+    long_description=read('README.md'),
     classifiers=["Development Status :: 3 - Alpha"],
 )
