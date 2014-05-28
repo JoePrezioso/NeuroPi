@@ -11,9 +11,5 @@ setup(
     url = "https://github.com/ArcticSphinx/NeuroPi",
     packages=['neuropi'],
     long_description=read('README'),
-    classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Topic :: Utilities",
-        "License :: OSI Approved :: BSD License",
-    ],
+    classifiers=[],
 )
