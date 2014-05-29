@@ -119,6 +119,7 @@ def gameLoop():
             if data.attention<0: data.attention = 90
             if data.meditation>100: data.meditation = 10
             if data.attention>100: data.attention = 10
+            if data.poor_signal<0: data.poor_signal = 0
             if data.poor_signal>200: data.poor_signal = 200
 
         #screen fill
